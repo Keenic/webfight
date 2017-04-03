@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>
+        WebFight
+    </title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+        }
+        #webfight {
+            height: 100%;
+        }
+        #webfight canvas {
+            width: auto !important;
+            height: 100% !important;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
     <div id="webfight"></div>
-  </body>
+</body>
+
 </html>
