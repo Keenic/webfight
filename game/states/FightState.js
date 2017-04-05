@@ -3,6 +3,7 @@ import config from '../config/config';
 
 export default class FightState extends Phaser.State {
     init(playerNo) {
+        this.playerNo = playerNo;
         this.stage.backgroundColor = '#000'
 
         const player1Position = {
@@ -12,12 +13,15 @@ export default class FightState extends Phaser.State {
         const player2Position = {
             x: config.gameWidth / 1.25,
             y: config.gameHeight / 1.5
+        };
+
+        if (this.playerNo) {
+            this.playerPosition = (playerNo === 0 || playerNo === 1) ? player1Position : player2Position;
+            this.enemyPlayerPosition = (playerNo === 0 || playerNo === 2) ? player1Position : player2Position;
+        } else {
+            this.playerPosition = player1Position;
+            this.enemyPlayerPosition = player2Position;
         }
-
-
-        this.playerPosition = playerNo === 1 ? player1Position : player2Position;
-        this.enemyPlayerPosition = playerNo === 2 ? player1Position : player2Position;
-
     }
 
     preload() {
@@ -36,8 +40,18 @@ export default class FightState extends Phaser.State {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         window.socket.on('enemyPlayerMove', (data) => {
-            this.enemyPlayer.x = data.x;
-            this.enemyPlayer.y = data.y;
+            if (this.playerNo) {
+                this.enemyPlayer.x = data.position.x;
+                this.enemyPlayer.y = data.position.y;
+            } else {
+                if (data.playerNo === 1) {
+                    this.player.x = data.position.x;
+                    this.player.y = data.position.y;
+                } else if (data.playerNo === 2) {
+                    this.enemyPlayer.x = data.position.x;
+                    this.enemyPlayer.y = data.position.y;
+                }
+            }
         });
     }
 
@@ -68,17 +82,19 @@ export default class FightState extends Phaser.State {
     }
 
     update() {
-        if (this.cursors.up.isDown) {
-            this.move('up');
-        }
-        if (this.cursors.down.isDown) {
-            this.move('down');
-        }
-        if (this.cursors.left.isDown) {
-            this.move('left');
-        }
-        if (this.cursors.right.isDown) {
-            this.move('right');
+        if (this.playerNo > 0) {
+            if (this.cursors.up.isDown) {
+                this.move('up');
+            }
+            if (this.cursors.down.isDown) {
+                this.move('down');
+            }
+            if (this.cursors.left.isDown) {
+                this.move('left');
+            }
+            if (this.cursors.right.isDown) {
+                this.move('right');
+            }
         }
     }
 }
