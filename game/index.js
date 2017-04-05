@@ -4,6 +4,9 @@ import config from './config/config';
 
 // States
 import InitState from './states/InitState';
+import FightState from './states/FightState';
+
+window.socket = io('/fight');
 
 class Game extends Phaser.Game {
     constructor() {
@@ -14,9 +17,17 @@ class Game extends Phaser.Game {
         super(width, height, Phaser.CANVAS, config.gameId, null);
 
         this.state.add('Init', InitState, false);
+        this.state.add('Fight', FightState, false);
 
-        this.state.start('Init');
+        window.socket.emit('joinningFight', {clientId: window.clientId});
+        window.socket.on('joinedFight', (data) => {
+            this.state.start('Fight', true, false, data.playerNo);
+        });
     }
 }
 
-window.game = new Game();
+window.socket.on('connected', (data) => {
+    window.clientId = data.clientId;
+    window.game = new Game();
+});
+

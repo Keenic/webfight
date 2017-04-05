@@ -21,8 +21,22 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
-            { test: /phaser-arcade-physics\.js$/, use: ['expose-loader?Phaser'] },
+            {
+                test: /pixi\.js/,
+                use: ['expose-loader?PIXI']
+            },
+            {
+                test: /phaser-arcade-physics\.js$/,
+                use: ['expose-loader?Phaser']
+            },
+            {
+                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/,
+                loader: 'file-loader',
+                options: {
+                    context: path.resolve(__dirname, "./game"),
+                    name: 'images/[path][name].[ext]'
+                }
+            }
         ]
     },
     plugins: [

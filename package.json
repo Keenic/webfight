@@ -2,9 +2,13 @@
     "dependencies": {
         "expose-loader": "^0.7.3",
         "express": "^4.15.2",
+        "file-loader": "^0.11.1",
+        "fs": "^0.0.1-security",
         "html-webpack-plugin": "^2.28.0",
+        "nodemon": "^1.11.0",
         "path": "^0.12.7",
         "phaser-ce": "^2.7.5",
+        "socket.io": "^1.7.3",
         "webpack": "^2.3.3"
     },
     "name": "webfight",
@@ -13,7 +17,7 @@
     "main": "server.js",
     "devDependencies": {},
     "scripts": {
-        "start": "webpack --config webpack.config.js --watch | node server.js",
+        "start": "webpack --config webpack.config.js --watch | nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
